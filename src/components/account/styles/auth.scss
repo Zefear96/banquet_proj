@@ -1,0 +1,20 @@
+.mainMob {
+  width: 100%;
+  position: absolute;
+}
+.authBlock {
+  width: 500px;
+  height: 600px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px black;
+  background: white;
+}
+
+@media screen and (max-width: 426px) {
+  .mainMob {
+    display: none;
+  }
+  // .authBlock {
+  //   width: 90vw;
+  // }
+}

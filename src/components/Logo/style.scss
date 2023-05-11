@@ -1,0 +1,25 @@
+$primary-color: #a07d50;
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  padding: 1.2rem 0rem;
+  h1 {
+    flex-grow: 1;
+    color: $primary-color;
+    font-family: "Amarante", cursive;
+    font-size: 36px;
+  }
+  .logo-line {
+    width: 10vw;
+  }
+}
+
+@media screen and (max-width: 880px) {
+  .logo {
+    padding: 0rem 0rem 0.5rem 0rem;
+    .logo-line {
+      width: 30vw;
+    }
+  }
+}

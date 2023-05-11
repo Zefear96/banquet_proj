@@ -1,0 +1,71 @@
+$primary-color: #a07d50;
+$primary-text-color: #373e44;
+
+.navbar {
+  min-height: 10vh;
+  width: 100%;
+  position: static;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0rem 4rem !important;
+
+  .avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 50px;
+  }
+}
+.login,
+.desktop,
+.mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.login {
+  p {
+    color: $primary-text-color;
+  }
+
+  .login-reg,
+  p {
+    font-family: "Inter", sans-serif;
+    color: $primary-text-color;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  .login-reg {
+    cursor: pointer;
+  }
+}
+
+.logo {
+  flex: 1;
+}
+.mobile {
+  display: none;
+}
+
+@media screen and (max-width: 880px) {
+  .navbar {
+    padding: 0rem 2rem;
+  }
+  .desktop {
+    display: none;
+  }
+  .mobile {
+    display: inline;
+    .fave {
+      margin-right: 1rem;
+    }
+  }
+}

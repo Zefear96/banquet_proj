@@ -1,0 +1,107 @@
+.edit {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+  width: 70vw;
+  background-color: #f9f9f9;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 50px;
+
+  .BlockLeft {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-right: 15px;
+  }
+  .editLogo {
+    margin: 40px 0px 20px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+    font-size: 35px;
+    color: white;
+    width: 120px;
+    height: 120px;
+    background-color: #a07d5099;
+    border: 12px solid rgb(255 255 255 / 42%);
+    border-radius: 100px;
+  }
+  .BlockRight {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+    .inpIcon {
+      color: rgba(255, 255, 255, 0) !important;
+    }
+    .css-1nrlq1o-MuiFormControl-root {
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+    .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+      border-radius: 10px !important;
+    }
+    input {
+      width: 40vw;
+    }
+    .edProfBt {
+      margin-top: 50px !important;
+      width: 200px;
+      background: #a07d50;
+      color: white;
+      margin: auto;
+    }
+  }
+}
+
+.feedback__label {
+  margin: 40px 0px 20px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  font-size: 35px;
+  color: white;
+  width: 120px;
+  height: 120px;
+  background-color: #a07d5099;
+  border: 12px solid rgb(255 255 255 / 42%);
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.feedback__file {
+  display: none;
+}
+
+@media screen and (max-width: 880px) {
+  .path {
+    display: none;
+  }
+  .edit {
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .BlockRight {
+      input {
+        width: 50vw;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .edit {
+    width: 90vw;
+    .BlockRight {
+      .edProfBt {
+        margin: 0;
+      }
+    }
+  }
+}
