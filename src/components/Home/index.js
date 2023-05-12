@@ -12,6 +12,7 @@ export const Home = () => {
 		{ length: 10 },
 		(_, i) => `https://loremflickr.com/640/480?random=${i + 1}`,
 	);
+
 	return (
 		<>
 			<MainPage />

@@ -1,20 +1,17 @@
-export type User = {
+export type Account = {
 	id: number;
 	last_login: string | null;
 	is_superuser: boolean;
-	first_name: string | null;
 	is_staff: boolean;
 	date_joined: string;
+	username: string;
 	email: string;
 	password: string;
-	name: string | null;
+	first_name: string | null;
 	last_name: string | null;
-	date_birth: string | null;
-	city: string | null;
-	profile_image: string | null;
-	phone_number: string;
-	is_active: boolean;
+	avatar: string | null;
 	activation_code: string;
+	is_active: boolean;
 	groups: any[];
 	user_permissions: any[];
 };
