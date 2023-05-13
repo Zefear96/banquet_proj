@@ -1,31 +1,25 @@
 // import logo from "../../assets/img/logo-line.svg"
 import "./style.scss";
-import Logo from "../Logo";
+import Logo from "../Logo/Logo";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useActions } from "../../hooks/UseActions";
 import { useSelector } from "react-redux";
 import ava from "../../media/images/ava.svg";
-import fave from "../../media/images/fave.svg";
+import heart from "../../media/images/heart.svg";
 import { useFetchAccount } from "../../services/account/fetch";
 import { useNavigate } from "react-router-dom";
 
 import React from "react";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 
-export const Navbar = () => {
+const Navbar = () => {
 	const [account, { isLoading, isError }] = useFetchAccount();
 	const navigate = useNavigate();
 	// const { profile } = useSelector((store) => store.todo);
@@ -41,19 +35,19 @@ export const Navbar = () => {
 		null,
 	);
 
-	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+	const handleOpenNavMenu = (
+		event: React.MouseEvent<HTMLElement>,
+		link: string,
+	) => {
 		setAnchorElNav(event.currentTarget);
 	};
 	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElUser(event.currentTarget);
 	};
 
-	const handleCloseNavMenu = () => {
-		setAnchorElNav(null);
-	};
-
-	const handleCloseUserMenu = () => {
+	const handleCloseUserMenu = (link: string) => {
 		setAnchorElUser(null);
+		navigate(link);
 	};
 
 	return (
@@ -94,10 +88,7 @@ export const Navbar = () => {
 						{settings.map((setting) => (
 							<MenuItem
 								key={setting.id}
-								onClick={() => {
-									handleCloseUserMenu;
-									navigate(setting.link);
-								}}
+								onClick={() => handleCloseUserMenu(setting.link)}
 							>
 								<Typography textAlign="center">{setting.title}</Typography>
 							</MenuItem>
@@ -110,7 +101,7 @@ export const Navbar = () => {
 					<div className="login">
 						<div className="mobile">
 							<Link to="/login">
-								<img src={fave} alt="favorite icon" className="fave" />
+								<img src={heart} alt="favorite icon" className="fave" />
 							</Link>
 							<Link to="/register">
 								<img src={ava} alt="ava icon" />
@@ -131,6 +122,8 @@ export const Navbar = () => {
 		</>
 	);
 };
+
+export default Navbar;
 
 const settings = [
 	{
