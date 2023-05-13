@@ -5,8 +5,8 @@ import { store } from "./store/store";
 import App from "./App";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
-import { QueryClientProvider } from "react-query";
-import { QueryClient } from "react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);

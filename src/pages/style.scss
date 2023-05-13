@@ -1,0 +1,25 @@
+// font-family: 'Amarante', cursive;
+// font-family: 'Inter', sans-serif;
+
+$primary-btn: #a07d50;
+$btn-hower: #c7ae8f;
+$btn-clicked: #dde2e4;
+
+.MainBox {
+  display: flex;
+  .chast1 {
+    background-color: white;
+  }
+  .chast2 {
+    margin-top: 60px;
+    text-overflow: clip;
+    overflow: scroll;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .MainBox {
+    display: flex;
+    flex-direction: column;
+  }
+}
