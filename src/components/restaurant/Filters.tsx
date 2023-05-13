@@ -6,7 +6,7 @@ import filterIcon from "../../media/images/filter.svg";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import ActiveButton from "../Buttons";
+import ActiveButton from "../Buttons/ActiveButton";
 import Rating from "@mui/material/Rating";
 import IconButton from "@mui/material/IconButton";
 import { useMediaQuery, useTheme } from "@mui/material";
