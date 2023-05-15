@@ -7,8 +7,6 @@ export const baseAxios = axios.create({
 	baseURL: API_URL,
 });
 
-// const {data} = await baseAxios.get('/daf', {params: {q: "sadas"}, headers: {Authorization: ''}});
-
 baseAxios.interceptors.request.use(
 	async (config) => {
 		const token = store.getState().auth.accessToken;
