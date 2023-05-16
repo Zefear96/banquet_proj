@@ -18,6 +18,7 @@ import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import RegisterModal from "../account/modals/RegisterModal";
 
 const Navbar = () => {
 	const [account, { isLoading, isError }] = useFetchAccount();
@@ -48,6 +49,10 @@ const Navbar = () => {
 	const handleCloseUserMenu = (link: string) => {
 		setAnchorElUser(null);
 		navigate(link);
+	};
+
+	const handleModal = () => {
+		<RegisterModal open={true} />;
 	};
 
 	return (
@@ -111,9 +116,11 @@ const Navbar = () => {
 							<Link to="/login">
 								<h6 className="login-reg">Войти</h6>
 							</Link>
-							<p>/</p>
 							<Link to="/register">
-								<h6 className="login-reg">Регистрация</h6>
+								<h6 className="login-reg" onClick={handleModal}>
+									Регистрация
+									{/* <RegisterModal open={true} /> */}
+								</h6>
 							</Link>
 						</div>
 					</div>
