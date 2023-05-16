@@ -9,13 +9,19 @@ import EditProfile from "./components/account/EditProfile";
 import ResetPassword from "./components/account/ResetPassword";
 import HomePage from "./pages/HomePage";
 import Details from "./components/restaurant/Details";
+import RegisterForm from "./components/account/RegisterForm";
+import LoginForm from "./components/account/LoginForm";
 
 const MainRoutes = () => {
 	return (
 		<Routes>
 			<Route path="/" element={<HomePage />} />
-			<Route path="/login" element={<Login />} />
-			<Route path="/register" element={<Registration />} />
+			{/* <Route path="/login" element={<Login />} /> */}
+			<Route path="/login" element={<LoginForm />} />
+
+			{/* <Route path="/register" element={<Registration />} /> */}
+			<Route path="/register" element={<RegisterForm />} />
+
 			<Route path="/feedback" element={<Myfeedback />} />
 			<Route path="/chosen" element={<Chosen />} />
 			<Route path="/editProfile" element={<EditProfile />} />
