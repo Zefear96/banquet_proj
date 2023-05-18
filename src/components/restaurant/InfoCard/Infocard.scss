@@ -1,0 +1,53 @@
+$primary-color: #a07d50;
+$primary-width: 45vw;
+.restchose {
+  width: 95vw;
+  margin: 50px auto;
+  display: flex;
+  align-items: center;
+  a {
+    margin-right: 10px;
+  }
+  p {
+    margin-left: 10px;
+  }
+}
+.Mychosecd {
+  width: $primary-width;
+  // margin: auto;
+  display: flex;
+  justify-content: space-between;
+
+  .p1 {
+    margin-right: 100px;
+    margin-left: 50px;
+    height: 35px;
+  }
+  p {
+    margin-right: 103px;
+    height: 35px;
+  }
+  div {
+    height: 1px;
+  }
+  .active {
+    border-bottom: none;
+  }
+
+  .active .textLine {
+    width: 100%;
+    height: 0.1px;
+    margin-right: 100px;
+    position: relative;
+    border: 3.5px solid #a07d50;
+    background-color: #a07d50;
+    border-radius: 50px;
+  }
+}
+.line1 {
+  width: $primary-width;
+  border-radius: 50px;
+  margin-top: -6.4px;
+  border: 3.5px solid #d9d9d9;
+  margin-bottom: 30px;
+}

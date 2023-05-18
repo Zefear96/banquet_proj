@@ -1,0 +1,25 @@
+.menu {
+  width: 95vw;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-color: rgb(245, 245, 245);
+
+  .MenuPrice {
+    position: relative;
+    bottom: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .MenuPriceText {
+      position: relative;
+      z-index: 99;
+      color: white;
+    }
+    img {
+      position: absolute;
+      width: 40%;
+    }
+  }
+}
