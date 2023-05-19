@@ -1,5 +1,5 @@
 $primary-color: #a07d50;
-$primary-width: 45vw;
+$primary-width: 55vw;
 .restchose {
   width: 95vw;
   margin: 50px auto;
@@ -50,4 +50,24 @@ $primary-width: 45vw;
   margin-top: -6.4px;
   border: 3.5px solid #d9d9d9;
   margin-bottom: 30px;
+}
+
+@media screen and (max-width: 800px) {
+  $primary-width: 75vw;
+  .Mychosecd {
+    width: $primary-width;
+  }
+  .line1 {
+    width: $primary-width;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  $primary-width: 100vw;
+  .Mychosecd {
+    width: $primary-width;
+  }
+  .line1 {
+    width: $primary-width;
+  }
 }
