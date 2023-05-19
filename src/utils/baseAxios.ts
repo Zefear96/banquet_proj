@@ -2,6 +2,7 @@ import { updateTokens } from "../store/slices/auth.slice";
 import { store } from "../store/store";
 import axios, { AxiosError } from "axios";
 import { API_URL } from "./constants";
+import { setUser } from "../store/slices/user.slice";
 
 export const baseAxios = axios.create({
 	baseURL: API_URL,
@@ -39,7 +40,7 @@ baseAxios.interceptors.response.use(
 
 		try {
 			const { data } = await axios.post<{ access: string }>(
-				"/account/refresh",
+				"/account/refresh/",
 				{ refresh: refreshToken },
 			);
 

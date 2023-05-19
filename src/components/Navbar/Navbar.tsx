@@ -24,10 +24,7 @@ import { checkTokenExists } from "../../store/slices/user.slice";
 import { useLogout } from "../../services/account/logout";
 
 const Navbar = () => {
-	const { query, errorFetch, clearErrorFetch, fetchUser } = useFetchUser();
 	const logout = useLogout();
-
-	// const [userInSys, setUserInSys] = React.useState(null);
 	const user = useAppSelector((state) => state.user.data);
 	const dispatch = useAppDispatch();
 

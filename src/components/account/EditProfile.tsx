@@ -24,11 +24,11 @@ import { useFetchUser } from "../../services/account/fetchUser";
 import { useFormik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { AddAPhoto } from "@mui/icons-material";
-import { MuiFileInput } from "mui-file-input";
+import { useAppSelector } from "../../store/hooks";
 
 const userFormSchema = z.object({
-	first_name: z.string().nonempty("Заполните данные"),
-	last_name: z.string().nonempty("Заполните данные"),
+	first_name: z.string(),
+	last_name: z.string(),
 	avatar: z
 		.union([
 			z.string().url().optional(),
@@ -65,24 +65,19 @@ const EditProfile = () => {
 		event.preventDefault();
 	};
 	const { editUser, error, isSuccess } = useEditUser();
-	const { user, errorFetch, clearErrorFetch } = useFetchUser();
+	// const { user, query, errorFetch, clearErrorFetch } = useFetchUser();
+	const user = useAppSelector((state) => state.user.data);
+	// const [user] = useFetchUser();
+
 	console.log(user);
 
 	const [fileOpen, setFileOpen] = React.useState(false);
 	const [file, setFile] = React.useState(null);
 
-	// const defaultValues = {
-	// 	first_name: user.first_name,
-	// 	last_name: user.last_name,
-	// 	avatar: user.avatar,
-	// };
-
 	const formik = useFormik({
 		initialValues: {
 			first_name: user?.first_name || "",
 			last_name: user?.last_name || "",
-			// avatar: null,
-			// ...defaultValues,
 		},
 		validationSchema: toFormikValidationSchema(userFormSchema),
 		onSubmit: (values, { resetForm }) => {
@@ -99,11 +94,15 @@ const EditProfile = () => {
 	};
 
 	useEffect(() => {
-		formik.setValues({
-			first_name: user?.first_name || "",
-			last_name: user?.last_name || "",
-		});
+		if (user) {
+			formik.setValues({
+				first_name: user.first_name || "",
+				last_name: user.last_name || "",
+			});
+		}
 	}, [user]);
+
+	if (!user) return <h1>Not Found</h1>; //чтобы тайпскрипт знал, что нужно остановиться и null не будет
 
 	return (
 		<Box className="profcateg">
@@ -132,7 +131,7 @@ const EditProfile = () => {
 							}}
 						>
 							<Avatar
-								// src={user.avatar}
+								src={user.avatar}
 								style={{
 									position: "absolute",
 									right: "15%",
@@ -178,9 +177,9 @@ const EditProfile = () => {
 								error={
 									formik.touched.first_name && Boolean(formik.errors.first_name)
 								}
-								helperText={
-									formik.touched.first_name && formik.errors.first_name
-								}
+								// helperText={
+								// 	formik.touched.first_name && formik.errors.first_name
+								// }
 							/>
 							<TextField
 								id="last_name"
@@ -193,7 +192,7 @@ const EditProfile = () => {
 								error={
 									formik.touched.last_name && Boolean(formik.errors.last_name)
 								}
-								helperText={formik.touched.last_name && formik.errors.last_name}
+								// helperText={formik.touched.last_name && formik.errors.last_name}
 							/>
 							<Button
 								type="submit"

@@ -5,6 +5,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch } from "../../store/hooks";
 import { updateTokens } from "../../store/slices/auth.slice";
 import { useNavigate } from "react-router-dom";
+import { fetchUser, useFetchUser } from "./fetchUser";
+import { setUser } from "../../store/slices/user.slice";
 
 type loginAccountArg = {
 	email: string;
@@ -25,7 +27,6 @@ export const useLoginAccount = () => {
 				access: string;
 				refresh: string;
 			}>("/account/login/", arg);
-
 			return data;
 		} catch (error) {
 			if (error.response) {
@@ -45,12 +46,8 @@ export const useLoginAccount = () => {
 
 	const mutation = useMutation({
 		mutationFn: loginAccount,
-		// onSuccess(data) {
-		// 	dispatch(
-		// 		updateTokens({ accessToken: data.access, refreshToken: data.refresh }),
-		// 	);
-		// },
-		onSuccess: (data) => {
+
+		onSuccess: async (data) => {
 			if (data && data.access) {
 				dispatch(
 					updateTokens({
@@ -58,6 +55,9 @@ export const useLoginAccount = () => {
 						refreshToken: data.refresh,
 					}),
 				);
+
+				const user = await fetchUser(); // Вызов fetchUser для получения данных пользователя
+				dispatch(setUser(user));
 			}
 		},
 
@@ -78,6 +78,10 @@ export const useLoginAccount = () => {
 	React.useEffect(() => {
 		if (mutation.isSuccess && !errorMessage) {
 			navigate("/");
+			// const user = fetchUser();
+			// console.log(user);
+
+			// dispatch(setUser(user));
 		}
 	}, [mutation.isSuccess, errorMessage, navigate]);
 
