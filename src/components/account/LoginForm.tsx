@@ -53,6 +53,8 @@ const LoginForm = () => {
 		onSubmit: (values, { resetForm }) => {
 			console.log(values);
 			loginAccount(values);
+
+			resetForm();
 		},
 	});
 

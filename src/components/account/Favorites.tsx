@@ -4,24 +4,24 @@ import { NavLink } from "react-router-dom";
 import "./styles/person.scss";
 import Delete from "../../media/images/delete.svg";
 import StarIcon from "@mui/icons-material/Star";
-import { PersonalArea } from "./PersonalArea";
+import Profile from "./Profile";
 
-const Chosen = () => {
+const Favorites = () => {
 	return (
 		<>
 			<Box className="profcateg">
 				<Box>
 					<NavLink to="/">Главная </NavLink> /
-					<NavLink to="/Mychosen"> Личный кабинет </NavLink>
+					<NavLink to="/profile"> Личный кабинет </NavLink>
 				</Box>
-				<PersonalArea />
+				<Profile />
 				<Box sx={{ marginTop: "20px", width: "auto" }}>
 					<Box className="Mychose">
-						<NavLink to="/Myfeedback">
+						<NavLink to="/profile/feedback">
 							<Typography>Мои отзывы</Typography>
 							<Box className="textLine"></Box>
 						</NavLink>
-						<NavLink to="/Mychosen">
+						<NavLink to="/profile/favorites">
 							<Typography>Избранное</Typography>
 							<Box className="textLine"></Box>
 						</NavLink>
@@ -119,4 +119,4 @@ const Chosen = () => {
 	);
 };
 
-export default Chosen;
+export default Favorites;

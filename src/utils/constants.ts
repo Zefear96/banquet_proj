@@ -1,1 +1,1 @@
-export const API_URL = "https://banquet.pythonanywhere.com/";
+export const API_URL = "http://banquet.pythonanywhere.com";
