@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
+	Avatar,
 	Box,
 	Button,
 	FormControl,
@@ -7,6 +8,7 @@ import {
 	InputAdornment,
 	InputLabel,
 	OutlinedInput,
+	Stack,
 	TextField,
 	Typography,
 } from "@mui/material";
@@ -16,10 +18,45 @@ import { NavLink } from "react-router-dom";
 import Delete from "@mui/icons-material/DeleteOutline";
 import "./styles/edit.scss";
 import "./styles/person.scss";
-// import { useActions } from "../hooks/UseActions";
-import { useState } from "react";
-import Footer from "../Footer/Footer";
-import { useSelector } from "react-redux";
+import { useEditUser } from "../../services/account/editUser";
+import { z } from "zod";
+import { useFetchUser } from "../../services/account/fetchUser";
+import { useFormik } from "formik";
+import { toFormikValidationSchema } from "zod-formik-adapter";
+import { AddAPhoto } from "@mui/icons-material";
+import { MuiFileInput } from "mui-file-input";
+
+const userFormSchema = z.object({
+	first_name: z.string().nonempty("Заполните данные"),
+	last_name: z.string().nonempty("Заполните данные"),
+	avatar: z
+		.union([
+			z.string().url().optional(),
+			(typeof window !== "undefined" ? z.instanceof(File) : z.any())
+				.refine((file) => {
+					if (!file) {
+						// If no file is uploaded, skip validation
+						return true;
+					}
+					const validTypes = ["image/jpeg", "image/png", "image/gif"];
+					if (!validTypes.includes(file.type)) {
+						throw new Error(
+							"Неверный формат файла! Пожалуйста, загрузите файл в формате JPEG, PNG или GIF.",
+						);
+					}
+					const maxSize = 15000000; // 15mb
+					if (file.size > maxSize) {
+						throw new Error(
+							"Максимальный размер файла 15 MB. Пожалуйста, загрузите файл меньшего размера.",
+						);
+					}
+					return true;
+				})
+				.nullable()
+				.optional(),
+		])
+		.optional(),
+});
 
 const EditProfile = () => {
 	const [showPassword, setShowPassword] = React.useState(false);
@@ -27,140 +64,198 @@ const EditProfile = () => {
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
 	};
-	const name = localStorage.getItem("name");
-	const last = localStorage.getItem("last");
+	const { editUser, error, isSuccess } = useEditUser();
+	const { user, errorFetch, clearErrorFetch } = useFetchUser();
+	console.log(user);
 
-	// const { EditAccount } = useActions();
-	const [first_name, setName] = useState(name);
-	const [last_name, setLast] = useState(last);
-	const [username, setUser] = useState("");
-	const [avatar, setAvatar] = useState("");
-	console.log(avatar);
-	function editProf() {
-		let formData = new FormData();
-		formData.append("username", username);
-		formData.append("first_name", first_name);
-		formData.append("last_name", last_name);
-		formData.append("avatar", avatar);
-		// EditAccount(formData);
-		localStorage.setItem("name", first_name);
-		localStorage.setItem("last", last_name);
-	}
+	const [fileOpen, setFileOpen] = React.useState(false);
+	const [file, setFile] = React.useState(null);
+
+	// const defaultValues = {
+	// 	first_name: user.first_name,
+	// 	last_name: user.last_name,
+	// 	avatar: user.avatar,
+	// };
+
+	const formik = useFormik({
+		initialValues: {
+			first_name: user?.first_name || "",
+			last_name: user?.last_name || "",
+			// avatar: null,
+			// ...defaultValues,
+		},
+		validationSchema: toFormikValidationSchema(userFormSchema),
+		onSubmit: (values, { resetForm }) => {
+			console.log(values);
+			const updatedValues = { ...values, avatar: file };
+			editUser(updatedValues);
+			resetForm();
+		},
+	});
+
+	const handleFileInputChange = (e) => {
+		const selectedFile = e.target.files[0];
+		setFile(selectedFile);
+	};
+
+	useEffect(() => {
+		formik.setValues({
+			first_name: user?.first_name || "",
+			last_name: user?.last_name || "",
+		});
+	}, [user]);
+
 	return (
-		<>
-			<Box className="profcateg">
-				<Box className="path">
-					<NavLink to="/">Главная </NavLink> /
-					<NavLink to="/Myfeedback"> Личный кабинет </NavLink> /
-					<NavLink to="/editProfile"> Редактировать профиль </NavLink>
-				</Box>
+		<Box className="profcateg">
+			<Box className="path">
+				<NavLink to="/">Главная </NavLink> /
+				<NavLink to="/profile"> Личный кабинет </NavLink> /
+				<NavLink to="/profile/edit"> Редактировать профиль </NavLink>
+			</Box>
+			<form
+				onSubmit={formik.handleSubmit}
+				className=" register-form"
+				style={{ width: "90%", margin: "auto" }}
+			>
 				<Box className="edit">
 					<Box className="BlockLeft">
-						<Typography variant="h5">Личные данные</Typography>
-						<label className="feedback__label">
-							К
-							<input
-								accept="image/png, image/jpeg"
-								type="file"
-								id="file_in"
-								className="feedback__file"
-								value={avatar}
-								onChange={(e) => setAvatar(e.target.value)}
-							/>
-						</label>
-						<Typography sx={{ display: "flex", color: "#787878" }}>
-							<Delete /> Удалить фото
+						<Typography variant="h5" style={{ marginBottom: "20px" }}>
+							Личные данные
 						</Typography>
+						<div
+							style={{
+								background: "rgba(160, 125, 80, 0.6)",
+								width: "140px",
+								height: "140px",
+								borderRadius: "50%",
+								position: "relative",
+							}}
+						>
+							<Avatar
+								// src={user.avatar}
+								style={{
+									position: "absolute",
+									right: "15%",
+									top: "15%",
+									width: "100px",
+									height: "100px",
+								}}
+							/>
+							<input
+								id="avatar"
+								name="avatar"
+								type="file"
+								accept="image/jpeg, image/png, image/gif"
+								style={{ display: "none" }}
+								onChange={handleFileInputChange}
+							/>
+						</div>
+						<label htmlFor="avatar">
+							<Button
+								variant="contained"
+								component="span"
+								startIcon={<AddAPhoto />}
+								style={{
+									margin: "10px auto",
+									background: "rgba(160, 125, 80, 1)",
+								}}
+							>
+								Add Photo
+							</Button>
+						</label>
 					</Box>
+
 					<Box className="BlockRight">
-						<Box>
-							<Typography> Имя и Фамилия на сайте</Typography>
-							<FormControl variant="outlined">
-								<InputLabel htmlFor="outlined-adornment-password">
-									Имя
-								</InputLabel>
-								<OutlinedInput
-									value={first_name}
-									onChange={(e) => setName(e.target.value)}
-									endAdornment={
-										<InputAdornment position="end">
-											<IconButton edge="end">
-												<Visibility className="inpIcon" />
-											</IconButton>
-										</InputAdornment>
-									}
-								/>
-							</FormControl>
-							<FormControl variant="outlined">
-								<InputLabel htmlFor="outlined-adornment-password">
-									Фамилия
-								</InputLabel>
-								<OutlinedInput
-									value={last_name}
-									onChange={(e) => setLast(e.target.value)}
-									endAdornment={
-										<InputAdornment position="end">
-											<IconButton edge="end">
-												<Visibility className="inpIcon" />
-											</IconButton>
-										</InputAdornment>
-									}
-								/>
-							</FormControl>
-						</Box>
-						<Box>
-							{/* <Typography>Изменить пароль</Typography>
-              <FormControl variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">
-                  Password
-                </InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-password"
-                  type={showPassword ? "text" : "password"}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end">
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="Password"
-                />
-              </FormControl>{" "}
-              <FormControl variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">
-                  Password
-                </InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-password"
-                  type={showPassword ? "text" : "password"}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end">
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="Password"
-                />
-              </FormControl> */}
-						</Box>
-						<Button onClick={() => editProf()} className="edProfBt">
-							Сохранить
-						</Button>
+						<Stack spacing={2}>
+							<TextField
+								id="first_name"
+								name="first_name"
+								label="First Name"
+								variant="outlined"
+								fullWidth
+								value={formik.values.first_name}
+								onChange={formik.handleChange}
+								error={
+									formik.touched.first_name && Boolean(formik.errors.first_name)
+								}
+								helperText={
+									formik.touched.first_name && formik.errors.first_name
+								}
+							/>
+							<TextField
+								id="last_name"
+								name="last_name"
+								label="Last Name"
+								variant="outlined"
+								fullWidth
+								value={formik.values.last_name}
+								onChange={formik.handleChange}
+								error={
+									formik.touched.last_name && Boolean(formik.errors.last_name)
+								}
+								helperText={formik.touched.last_name && formik.errors.last_name}
+							/>
+							<Button
+								type="submit"
+								style={{
+									background: "rgba(160, 125, 80, 1)",
+									color: "white",
+									width: "50%",
+									margin: "10px auto",
+								}}
+							>
+								Сохранить
+							</Button>
+						</Stack>
+					</Box>
+					<Box>
+						{/* <Typography>Изменить пароль</Typography>
+		          <FormControl variant="outlined">
+		            <InputLabel htmlFor="outlined-adornment-password">
+		              Password
+		            </InputLabel>
+		            <OutlinedInput
+		              id="outlined-adornment-password"
+		              type={showPassword ? "text" : "password"}
+		              endAdornment={
+		                <InputAdornment position="end">
+		                  <IconButton
+		                    aria-label="toggle password visibility"
+		                    onClick={handleClickShowPassword}
+		                    onMouseDown={handleMouseDownPassword}
+		                    edge="end">
+		                    {showPassword ? <Visibility /> : <VisibilityOff />}
+		                  </IconButton>
+		                </InputAdornment>
+		              }
+		              label="Password"
+		            />
+		          </FormControl>{" "}
+		          <FormControl variant="outlined">
+		            <InputLabel htmlFor="outlined-adornment-password">
+		              Password
+		            </InputLabel>
+		            <OutlinedInput
+		              id="outlined-adornment-password"
+		              type={showPassword ? "text" : "password"}
+		              endAdornment={
+		                <InputAdornment position="end">
+		                  <IconButton
+		                    aria-label="toggle password visibility"
+		                    onClick={handleClickShowPassword}
+		                    onMouseDown={handleMouseDownPassword}
+		                    edge="end">
+		                    {showPassword ? <Visibility /> : <VisibilityOff />}
+		                  </IconButton>
+		                </InputAdornment>
+		              }
+		              label="Password"
+		            />
+		          </FormControl> */}
 					</Box>
 				</Box>
-			</Box>
-			<Footer />
-		</>
+			</form>
+		</Box>
 	);
 };
 

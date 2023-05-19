@@ -4,6 +4,7 @@ import { baseAxios } from "../../utils/baseAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch } from "../../store/hooks";
 import { updateTokens } from "../../store/slices/auth.slice";
+import { useNavigate } from "react-router-dom";
 
 type loginAccountArg = {
 	email: string;
@@ -14,6 +15,7 @@ export const useLoginAccount = () => {
 	const dispatch = useAppDispatch();
 	const queryClient = useQueryClient();
 	const [errorMessage, setErrorMessage] = React.useState<string>("");
+	const navigate = useNavigate();
 
 	const loginAccount = async (arg: loginAccountArg) => {
 		setErrorMessage("");
@@ -27,6 +29,8 @@ export const useLoginAccount = () => {
 			return data;
 		} catch (error) {
 			if (error.response) {
+				console.log(error);
+
 				setErrorMessage(
 					Object.values(error.response.data).flat(2)[0] as string,
 				);
@@ -39,11 +43,22 @@ export const useLoginAccount = () => {
 		}
 	};
 
-	const mutation = useMutation(loginAccount, {
-		onSuccess(data) {
-			dispatch(
-				updateTokens({ accessToken: data.access, refreshToken: data.refresh }),
-			);
+	const mutation = useMutation({
+		mutationFn: loginAccount,
+		// onSuccess(data) {
+		// 	dispatch(
+		// 		updateTokens({ accessToken: data.access, refreshToken: data.refresh }),
+		// 	);
+		// },
+		onSuccess: (data) => {
+			if (data && data.access) {
+				dispatch(
+					updateTokens({
+						accessToken: data.access,
+						refreshToken: data.refresh,
+					}),
+				);
+			}
 		},
 
 		onError(error: any) {
@@ -59,6 +74,12 @@ export const useLoginAccount = () => {
 			});
 		},
 	});
+
+	React.useEffect(() => {
+		if (mutation.isSuccess && !errorMessage) {
+			navigate("/");
+		}
+	}, [mutation.isSuccess, errorMessage, navigate]);
 
 	return {
 		loginAccount: mutation.mutateAsync,

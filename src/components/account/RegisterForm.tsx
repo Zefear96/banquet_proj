@@ -172,11 +172,11 @@ const RegisterForm = () => {
 									error={
 										formik.touched.email && formik.errors.email ? true : false
 									}
-									helperText={
-										formik.touched.email && formik.errors.email
-											? formik.errors.email
-											: ""
-									}
+									// helperText={
+									// 	formik.touched.email && formik.errors.email
+									// 		? formik.errors.email
+									// 		: ""
+									// }
 								/>
 
 								<FormControl
@@ -210,11 +210,11 @@ const RegisterForm = () => {
 										}
 										label="Пароль"
 									/>
-									<FormHelperText>
+									{/* <FormHelperText>
 										{formik.touched.password && formik.errors.password
 											? formik.errors.password
 											: ""}
-									</FormHelperText>
+									</FormHelperText> */}
 								</FormControl>
 
 								<FormControl
@@ -250,11 +250,11 @@ const RegisterForm = () => {
 										}
 										label="Подтверждение пароля"
 									/>
-									<FormHelperText>
+									{/* <FormHelperText>
 										{formik.touched.password2 && formik.errors.password2
 											? formik.errors.password2
 											: ""}
-									</FormHelperText>
+									</FormHelperText> */}
 								</FormControl>
 
 								<FormControl sx={{ color: "#989B9E" }}>
@@ -267,13 +267,11 @@ const RegisterForm = () => {
 									>
 										<FormControlLabel
 											value="default"
-											// onChange={() => SetCategory("default")}
 											control={<Radio />}
 											label="Гость"
 										/>
 										<FormControlLabel
 											value="business"
-											// onChange={() => SetCategory("business")}
 											control={<Radio />}
 											label="Ресторатор"
 										/>

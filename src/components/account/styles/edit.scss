@@ -1,8 +1,7 @@
 .edit {
   display: flex;
   justify-content: space-between;
-  margin-top: 50px;
-  width: 70vw;
+  margin: 50px auto;
   background-color: #f9f9f9;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -30,7 +29,7 @@
     border-radius: 100px;
   }
   .BlockRight {
-    width: 100%;
+    width: 50%;
     display: flex;
     align-items: center;
     flex-direction: column;

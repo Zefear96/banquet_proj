@@ -6,11 +6,11 @@ import "./styles/person.scss";
 // import { useActions } from "../hooks/UseActions";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { PersonalArea } from "./PersonalArea";
-import Footer from "../Footer/Footer";
+import EditProfile from "./EditProfile";
+import Profile from "./Profile";
 
-const Myfeedback = () => {
-	const { Profile } = useSelector((store) => store.todo);
+const ProfileMain = () => {
+	// const { Profile } = useSelector((store) => store.todo);
 	// const { getprofile, AccRefresh } = useActions();
 	// useEffect(() => {
 	// 	getprofile();
@@ -21,16 +21,16 @@ const Myfeedback = () => {
 			<Box className="profcateg">
 				<Box>
 					<NavLink to="/">Главная </NavLink> /
-					<NavLink to="/Myfeedback"> Личный кабинет </NavLink>
+					<NavLink to="/profile"> Личный кабинет </NavLink>
 				</Box>
-				<PersonalArea />
+				<Profile />
 				<Box sx={{ marginTop: "20px", width: "auto" }}>
 					<Box className="Mychose">
-						<NavLink to="/Myfeedback">
+						<NavLink to="/profile/feedback">
 							<Typography>Мои отзывы</Typography>
 							<Box className="textLine"></Box>
 						</NavLink>
-						<NavLink to="/Mychosen">
+						<NavLink to="/profile/favorites">
 							<Typography>Избранное</Typography>
 							<Box className="textLine"></Box>
 						</NavLink>
@@ -106,9 +106,8 @@ const Myfeedback = () => {
 					</Box>
 				</Box>
 			</Box>
-			<Footer />
 		</>
 	);
 };
 
-export default Myfeedback;
+export default ProfileMain;
