@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Alert,
 	Box,
@@ -24,6 +24,9 @@ import { z } from "zod";
 import { useLoginAccount } from "../../services/account/login";
 import { useFormik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { useAppDispatch } from "../../store/hooks";
+import { setUser } from "../../store/slices/user.slice";
+import { useFetchUser } from "../../services/account/fetchUser";
 
 const loginFormSchema = z.object({
 	email: z
@@ -38,7 +41,9 @@ const LoginForm = () => {
 	const [showPassword, setShowPassword] = React.useState(false);
 	const navigate = useNavigate();
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
-	const { loginAccount, error, clearError } = useLoginAccount();
+	const { loginAccount, error, clearError, isSuccess } = useLoginAccount();
+	const dispatch = useAppDispatch();
+	const { fetchUser } = useFetchUser();
 
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
@@ -109,17 +114,6 @@ const LoginForm = () => {
 										: error}
 								</Alert>
 							)}
-
-							{/* {isSuccess ? (
-								<Alert
-									severity="success"
-									onClose={clearError}
-									sx={{ margin: "10px" }}
-								>
-									"Аккаунт успешно создан! Проверьте почту для активации
-									аккаунта"
-								</Alert>
-							) : null} */}
 						</Box>
 
 						<Typography sx={{ margin: "40px auto", fontSize: "23px" }}>
@@ -204,19 +198,19 @@ const LoginForm = () => {
 										</Typography>
 									</Link>
 								</Box>
+								<Button
+									sx={{
+										background: "#A07D50",
+										color: "white",
+										width: "200px",
+										margin: "30px auto",
+										textTransform: "capitalize",
+									}}
+									type="submit"
+								>
+									Войти
+								</Button>
 							</Box>
-							<Button
-								sx={{
-									background: "#A07D50",
-									color: "white",
-									width: "200px",
-									margin: "30px auto",
-									textTransform: "capitalize",
-								}}
-								type="submit"
-							>
-								Войти
-							</Button>
 						</form>
 					</Box>
 				</Box>

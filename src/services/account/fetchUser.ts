@@ -6,20 +6,26 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { setUser } from "../../store/slices/user.slice";
 import { useAppDispatch } from "../../store/hooks";
 
+export const fetchUser = async () => {
+	try {
+		const { data } = await baseAxios.get<Account>("/account/users/me/");
+
+		const userData = {
+			first_name: data.first_name,
+			last_name: data.last_name,
+			avatar: data.avatar,
+		};
+
+		return userData;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 export const useFetchUser = () => {
 	const accessToken = useAppSelector((state) => state.auth.accessToken);
 	const [errorMessage, setErrorMessage] = React.useState("");
 	const dispatch = useAppDispatch();
-
-	const fetchUser = async () => {
-		try {
-			const { data } = await baseAxios.get<Account>("/account/users/me/");
-
-			return data;
-		} catch (error) {
-			console.log(error);
-		}
-	};
 
 	const query = useQuery({
 		queryFn: fetchUser,
@@ -27,22 +33,8 @@ export const useFetchUser = () => {
 		initialData: null,
 		enabled: Boolean(accessToken),
 		onSuccess: (data) => {
-			const userData = {
-				first_name: data.first_name,
-				last_name: data.last_name,
-				avatar: data.avatar,
-			};
-			localStorage.setItem(
-				"user",
-				JSON.stringify(userData, (key, value) => {
-					if (key === "stateNode") {
-						return undefined;
-					}
-					return value;
-				}),
-			);
-			// localStorage.setItem("user", JSON.stringify(userData));
-			dispatch(setUser(userData));
+			localStorage.setItem("user", JSON.stringify(data));
+			dispatch(setUser(data));
 		},
 	});
 
