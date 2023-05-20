@@ -78,19 +78,15 @@ export const useLoginAccount = () => {
 	React.useEffect(() => {
 		if (mutation.isSuccess && !errorMessage) {
 			navigate("/");
-			// const user = fetchUser();
-			// console.log(user);
-
-			// dispatch(setUser(user));
 		}
 	}, [mutation.isSuccess, errorMessage, navigate]);
 
-	return {
-		loginAccount: mutation.mutateAsync,
-		isLoading: mutation.isLoading,
-		error: errorMessage,
-		clearError: () => setErrorMessage(""),
-		isSuccess: mutation.isSuccess && !errorMessage,
-	};
-	// return [mutation.mutateAsync, mutation, errorMessage] as const;
+	// return {
+	// 	loginAccount: mutation.mutateAsync,
+	// 	isLoading: mutation.isLoading,
+	// 	error: errorMessage,
+	// 	clearError: () => setErrorMessage(""),
+	// 	isSuccess: mutation.isSuccess && !errorMessage,
+	// };
+	return [mutation.mutateAsync, mutation, errorMessage] as const;
 };

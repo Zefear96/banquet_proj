@@ -41,9 +41,12 @@ const LoginForm = () => {
 	const [showPassword, setShowPassword] = React.useState(false);
 	const navigate = useNavigate();
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
-	const { loginAccount, error, clearError, isSuccess } = useLoginAccount();
+	// const { loginAccount, error, clearError, isSuccess } = useLoginAccount();
+	const [loginAccount] = useLoginAccount();
+
 	const dispatch = useAppDispatch();
-	const { fetchUser } = useFetchUser();
+	// const { fetchUser } = useFetchUser();
+	const [fetchUser] = useFetchUser();
 
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
@@ -103,7 +106,7 @@ const LoginForm = () => {
 						</Box>
 
 						<Box sx={{ height: "70px", margin: "20px" }}>
-							{error && (
+							{/* {error && (
 								<Alert
 									severity="error"
 									// onClose={}
@@ -113,7 +116,7 @@ const LoginForm = () => {
 										? "Пользователь с такой почтой уже существует!"
 										: error}
 								</Alert>
-							)}
+							)} */}
 						</Box>
 
 						<Typography sx={{ margin: "40px auto", fontSize: "23px" }}>
