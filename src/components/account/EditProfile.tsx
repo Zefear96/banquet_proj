@@ -20,7 +20,7 @@ import "./styles/edit.scss";
 import "./styles/person.scss";
 import { useEditUser } from "../../services/account/editUser";
 import { z } from "zod";
-import { useFetchUser } from "../../services/account/fetchUser";
+import { fetchUser, useFetchUser } from "../../services/account/fetchUser";
 import { useFormik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { AddAPhoto } from "@mui/icons-material";
@@ -64,10 +64,13 @@ const EditProfile = () => {
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
 	};
-	const { editUser, error, isSuccess } = useEditUser();
-	// const { user, query, errorFetch, clearErrorFetch } = useFetchUser();
+	// const { editUser, error, isSuccess } = useEditUser();
+	const [editUser] = useEditUser();
+
+	const [currentUser] = useFetchUser();
 	const user = useAppSelector((state) => state.user.data);
 	// const [user] = useFetchUser();
+	const [previewUrl, setPreviewUrl] = React.useState(null); // New state for storing the preview URL
 
 	console.log(user);
 
@@ -76,8 +79,9 @@ const EditProfile = () => {
 
 	const formik = useFormik({
 		initialValues: {
-			first_name: user?.first_name || "",
-			last_name: user?.last_name || "",
+			first_name: currentUser?.first_name || "",
+			last_name: currentUser?.last_name || "",
+			avatar: currentUser?.avatar || "",
 		},
 		validationSchema: toFormikValidationSchema(userFormSchema),
 		onSubmit: (values, { resetForm }) => {
@@ -89,20 +93,33 @@ const EditProfile = () => {
 	});
 
 	const handleFileInputChange = (e) => {
-		const selectedFile = e.target.files[0];
+		const selectedFile = e.currentTarget.files[0];
+		// const newAvatar = selectedFile ? selectedFile : null;
 		setFile(selectedFile);
+		setPreviewUrl(URL.createObjectURL(selectedFile)); // Create a preview URL for the selected file
 	};
 
 	useEffect(() => {
-		if (user) {
+		if (currentUser) {
 			formik.setValues({
-				first_name: user.first_name || "",
-				last_name: user.last_name || "",
+				first_name: currentUser.first_name || "",
+				last_name: currentUser.last_name || "",
+				avatar: currentUser.avatar || "",
 			});
 		}
-	}, [user]);
+		fetchUser();
+	}, [currentUser, fetchUser]);
 
-	if (!user) return <h1>Not Found</h1>; //чтобы тайпскрипт знал, что нужно остановиться и null не будет
+	if (!currentUser) return <h1>Not Found</h1>;
+	if (currentUser.first_name === null) {
+		currentUser.first_name = "";
+	}
+	if (currentUser.last_name === null) {
+		currentUser.last_name = "";
+	}
+	if (currentUser.avatar === null) {
+		currentUser.avatar = "";
+	}
 
 	return (
 		<Box className="profcateg">
@@ -130,16 +147,29 @@ const EditProfile = () => {
 								position: "relative",
 							}}
 						>
-							<Avatar
-								src={user.avatar}
-								style={{
-									position: "absolute",
-									right: "15%",
-									top: "15%",
-									width: "100px",
-									height: "100px",
-								}}
-							/>
+							{previewUrl ? (
+								<Avatar
+									src={previewUrl} // Show the preview URL as the source of the Avatar component
+									style={{
+										position: "absolute",
+										right: "15%",
+										top: "15%",
+										width: "100px",
+										height: "100px",
+									}}
+								/>
+							) : (
+								<Avatar
+									src={currentUser.avatar} // Show the preview URL as the source of the Avatar component
+									style={{
+										position: "absolute",
+										right: "15%",
+										top: "15%",
+										width: "100px",
+										height: "100px",
+									}}
+								/>
+							)}
 							<input
 								id="avatar"
 								name="avatar"

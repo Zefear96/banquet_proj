@@ -1,4 +1,4 @@
-import { Box, Card, Typography } from "@mui/material";
+import { Avatar, Box, Card, Stack, Typography } from "@mui/material";
 import React from "react";
 import { NavLink } from "react-router-dom";
 // import { useActions } from "../hooks/UseActions";
@@ -17,16 +17,26 @@ const Profile = () => {
 				{user ? (
 					<Box className="MyAreaBox">
 						<Box sx={{ display: "flex", alignItems: "center" }}>
-							<Box id="myAvatar"></Box>
-							<Box className="mytextAva">
-								<Typography> {user.first_name}</Typography>
-							</Box>
-							<Box className="mytextAva">
-								<Typography> {user.last_name}</Typography>
-							</Box>
-							<Box className="mytextAva">
-								<Typography> {user.email}</Typography>
-							</Box>
+							<Avatar
+								src={user.avatar}
+								style={{
+									border: "2px solid rgba(160, 125, 80, 1)",
+									width: "80px",
+									height: "80px",
+									margin: "10px",
+								}}
+							/>
+							<Stack>
+								<Box className="mytextAva">
+									<Typography>Имя: {user.first_name}</Typography>
+								</Box>
+								<Box className="mytextAva">
+									<Typography>Фамилия: {user.last_name}</Typography>
+								</Box>
+								<Box className="mytextAva">
+									<Typography>Email: {user.email}</Typography>
+								</Box>
+							</Stack>
 						</Box>
 						<Box sx={{ display: "flex" }}>
 							<Box className="areaBtn">
