@@ -70,10 +70,7 @@ const EditProfile = () => {
 	const [currentUser] = useFetchUser();
 	const user = useAppSelector((state) => state.user.data);
 	// const [user] = useFetchUser();
-	const [previousValues, setPreviousValues] = React.useState({
-		first_name: "",
-		last_name: "",
-	});
+	const [previewUrl, setPreviewUrl] = React.useState(null); // New state for storing the preview URL
 
 	console.log(user);
 
@@ -99,10 +96,11 @@ const EditProfile = () => {
 		const selectedFile = e.currentTarget.files[0];
 		// const newAvatar = selectedFile ? selectedFile : null;
 		setFile(selectedFile);
+		setPreviewUrl(URL.createObjectURL(selectedFile)); // Create a preview URL for the selected file
 	};
 
 	useEffect(() => {
-		if (user) {
+		if (currentUser) {
 			formik.setValues({
 				first_name: currentUser.first_name || "",
 				last_name: currentUser.last_name || "",
@@ -110,9 +108,18 @@ const EditProfile = () => {
 			});
 		}
 		fetchUser();
-	}, [user, fetchUser]);
+	}, [currentUser, fetchUser]);
 
-	if (!user) return <h1>Not Found</h1>;
+	if (!currentUser) return <h1>Not Found</h1>;
+	if (currentUser.first_name === null) {
+		currentUser.first_name = "";
+	}
+	if (currentUser.last_name === null) {
+		currentUser.last_name = "";
+	}
+	if (currentUser.avatar === null) {
+		currentUser.avatar = "";
+	}
 
 	return (
 		<Box className="profcateg">
@@ -140,16 +147,29 @@ const EditProfile = () => {
 								position: "relative",
 							}}
 						>
-							<Avatar
-								src={formik.values.avatar}
-								style={{
-									position: "absolute",
-									right: "15%",
-									top: "15%",
-									width: "100px",
-									height: "100px",
-								}}
-							/>
+							{previewUrl ? (
+								<Avatar
+									src={previewUrl} // Show the preview URL as the source of the Avatar component
+									style={{
+										position: "absolute",
+										right: "15%",
+										top: "15%",
+										width: "100px",
+										height: "100px",
+									}}
+								/>
+							) : (
+								<Avatar
+									src={currentUser.avatar} // Show the preview URL as the source of the Avatar component
+									style={{
+										position: "absolute",
+										right: "15%",
+										top: "15%",
+										width: "100px",
+										height: "100px",
+									}}
+								/>
+							)}
 							<input
 								id="avatar"
 								name="avatar"

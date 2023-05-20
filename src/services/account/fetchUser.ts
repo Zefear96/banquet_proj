@@ -15,6 +15,7 @@ export const fetchUser = async () => {
 			first_name: data.first_name,
 			last_name: data.last_name,
 			avatar: data.avatar,
+			email: data.email,
 		};
 
 		return userData;
