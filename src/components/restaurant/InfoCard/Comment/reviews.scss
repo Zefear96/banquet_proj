@@ -39,23 +39,3 @@
     }
   }
 }
-
-.reviewsModal {
-  transform: 2s;
-  position: fixed;
-  right: 1%;
-  top: 40%;
-  width: 500px;
-  background-color: white;
-  box-shadow: 0px 0px 5px 3px grey;
-  padding: 25px;
-  img {
-    width: 15px;
-  }
-  .reviewsBtn {
-    margin-top: 10px;
-    background-color: #a07d50;
-    color: white;
-    padding: 8px 20px;
-  }
-}
