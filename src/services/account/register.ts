@@ -36,11 +36,11 @@ export const useRegisterAccount = () => {
 
 	const mutation = useMutation(registerAccount);
 
-	React.useEffect(() => {
-		if (mutation.isSuccess && !errorMessage) {
-			navigate("/login");
-		}
-	}, [mutation.isSuccess, errorMessage, navigate]);
+	// React.useEffect(() => {
+	// 	if (mutation.isSuccess && !errorMessage) {
+	// 		navigate("/login");
+	// 	}
+	// }, [mutation.isSuccess, errorMessage, navigate]);
 
 	return {
 		registerAccount: mutation.mutateAsync,

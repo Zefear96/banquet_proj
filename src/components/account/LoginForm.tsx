@@ -105,20 +105,6 @@ const LoginForm = () => {
 							</Link>
 						</Box>
 
-						<Box sx={{ height: "70px", margin: "20px" }}>
-							{/* {error && (
-								<Alert
-									severity="error"
-									// onClose={}
-									// sx={{ marginBottom: "10px" }}
-								>
-									{error === "user with this email already exists."
-										? "Пользователь с такой почтой уже существует!"
-										: error}
-								</Alert>
-							)} */}
-						</Box>
-
 						<Typography sx={{ margin: "40px auto", fontSize: "23px" }}>
 							Вход
 						</Typography>

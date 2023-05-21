@@ -14,6 +14,8 @@ type editUserArg = {
 
 const editUser = async (arg: editUserArg) => {
 	// const [errorMessage, setErrorMessage] = React.useState<string>("");
+	console.log(arg);
+
 	const formData = new FormData();
 
 	try {

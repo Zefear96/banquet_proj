@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
@@ -11,6 +11,7 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@mui/material";
+import CustomAlert from "../account/CustomAlert";
 
 const restaurantFormSchema = z.object({
 	title: z.string(),
@@ -48,7 +49,7 @@ const restaurantFormSchema = z.object({
 });
 
 const FormCreateRestaurant = () => {
-	const { createRestaurant } = useCreateRestaurant();
+	const { createRestaurant, isSuccess, error } = useCreateRestaurant();
 
 	const formik = useFormik({
 		initialValues: {
@@ -62,13 +63,19 @@ const FormCreateRestaurant = () => {
 		validationSchema: toFormikValidationSchema(restaurantFormSchema),
 		onSubmit: (values, { resetForm }) => {
 			console.log(values);
-			createRestaurant(values);
+			const restObj = { ...values, image: files };
+			createRestaurant(restObj);
 
 			resetForm();
+			setUploadedImages([]);
+			setFiles([]);
 		},
 	});
 
 	const [uploadedImages, setUploadedImages] = useState([]);
+	console.log(uploadedImages);
+	const [files, setFiles] = React.useState([]);
+	console.log(files);
 
 	const onDrop = useCallback((acceptedFiles) => {
 		// Создаем превью для каждого загруженного файла
@@ -77,6 +84,7 @@ const FormCreateRestaurant = () => {
 
 		// Обработка загруженных файлов
 		console.log(acceptedFiles);
+		setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
 	}, []);
 
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -87,6 +95,22 @@ const FormCreateRestaurant = () => {
 			updatedImages.splice(index, 1);
 			return updatedImages;
 		});
+	};
+
+	const handleFileInputChange = (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		const files = event.currentTarget.files;
+		if (files && files.length > 0) {
+			const imagesArray = Array.from(files).map((file) =>
+				URL.createObjectURL(file),
+			);
+			setUploadedImages((prevImages) => [...prevImages, ...imagesArray]);
+			console.log(files);
+
+			// formik.setFieldValue("image", files); // Set the array of files as the value
+			// setFiles(Array.from(files));
+		}
 	};
 
 	return (
@@ -112,6 +136,7 @@ const FormCreateRestaurant = () => {
 					justifyContent: "space-between",
 					flexWrap: "wrap",
 				}}
+				// encType="multipart/form-data"
 			>
 				<Box sx={{ width: "45%" }}>
 					<Stack spacing={3}>
@@ -199,13 +224,7 @@ const FormCreateRestaurant = () => {
 							borderRadius: "10px",
 						}}
 					>
-						<input
-							{...getInputProps()}
-							value={formik.values.image}
-							onChange={(event) => {
-								formik.setFieldValue("image", event.currentTarget.files[0]);
-							}}
-						/>
+						<input {...getInputProps()} onChange={handleFileInputChange} />
 						{isDragActive ? (
 							<p style={{ margin: "10px" }}>Перетащите файлы сюда...</p>
 						) : (
@@ -268,6 +287,13 @@ const FormCreateRestaurant = () => {
 					</Button>
 				</Box>
 			</form>
+			{isSuccess ? (
+				<CustomAlert
+					type={"success"}
+					message={"Ваше объявление успешно создано"}
+				/>
+			) : null}
+			{error ? <CustomAlert type={"error"} message={error} /> : null}
 		</Container>
 	);
 };

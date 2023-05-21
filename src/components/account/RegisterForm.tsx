@@ -5,6 +5,7 @@ import { useRegisterAccount } from "../../services/account/register";
 import { useNavigate, Link, NavLink } from "react-router-dom";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import "./styles/auth.scss";
+import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 
 import {
 	Alert,
@@ -31,6 +32,7 @@ import back from "../../media/images/back.svg";
 import exit from "../../media/images/exit.svg";
 import { log } from "console";
 import MainPage from "../Home/MainPage";
+import CustomAlert from "./CustomAlert";
 
 const registrationFormSchema = z
 	.object({
@@ -123,31 +125,6 @@ const RegisterForm = () => {
 							<Link to="/">
 								<img src={exit} alt="" />
 							</Link>
-						</Box>
-
-						<Box sx={{ height: "70px", margin: "20px" }}>
-							{error && (
-								<Alert
-									severity="error"
-									// onClose={}
-									// sx={{ marginBottom: "10px" }}
-								>
-									{error === "user with this email already exists."
-										? "Пользователь с такой почтой уже существует!"
-										: error}
-								</Alert>
-							)}
-
-							{isSuccess ? (
-								<Alert
-									severity="success"
-									onClose={clearError}
-									sx={{ margin: "10px" }}
-								>
-									"Аккаунт успешно создан! Проверьте почту для активации
-									аккаунта"
-								</Alert>
-							) : null}
 						</Box>
 
 						<Typography sx={{ margin: "0px auto 20px", fontSize: "23px" }}>
@@ -303,6 +280,16 @@ const RegisterForm = () => {
 					</Box>
 				</Box>
 			</Box>
+
+			{error && <CustomAlert message={error} type={"error"} />}
+			{isSuccess ? (
+				<CustomAlert
+					message={
+						"Аккаунт успешно создан! Проверьте почту для активации аккаунта"
+					}
+					type={"success"}
+				/>
+			) : null}
 		</>
 	);
 };

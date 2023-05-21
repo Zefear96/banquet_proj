@@ -92,7 +92,7 @@ const EditProfile = () => {
 		},
 	});
 
-	const handleFileInputChange = (e) => {
+	const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = e.currentTarget.files[0];
 		// const newAvatar = selectedFile ? selectedFile : null;
 		setFile(selectedFile);

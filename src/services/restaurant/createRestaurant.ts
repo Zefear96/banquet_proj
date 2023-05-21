@@ -20,20 +20,36 @@ export const useCreateRestaurant = () => {
 	const navigate = useNavigate();
 
 	const createRestaurant = async (arg: createRestaurant) => {
+		console.log(arg);
+
 		setErrorMessage("");
 		const formData = new FormData();
 
 		try {
 			for (const [key, value] of Object.entries(arg)) {
 				if (value !== null && value !== undefined && value !== "") {
-					if (value instanceof Blob) {
-						formData.append(key, value);
+					if (key === "image") {
+						// Если свойство является массивом файлов
+						if (Array.isArray(value)) {
+							value.forEach((file) => {
+								formData.append("image", file); // Используйте имя поля "image" для каждого файла
+							});
+						} else {
+							// Если свойство является одиночным файлом
+							formData.append("image", value);
+						}
 					} else {
 						formData.append(key, value.toString());
 					}
 				}
 			}
-			const { data } = await baseAxios.post("/restaurant/create/", formData);
+
+			const { data } = await baseAxios.post("/restaurant/create/", formData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			});
+
 			return data;
 		} catch (error) {
 			if (error.response) {
