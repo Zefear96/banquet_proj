@@ -189,7 +189,7 @@ const EditProfile = () => {
 									background: "rgba(160, 125, 80, 1)",
 								}}
 							>
-								Add Photo
+								Загрузить фото
 							</Button>
 						</label>
 					</Box>
@@ -199,7 +199,7 @@ const EditProfile = () => {
 							<TextField
 								id="first_name"
 								name="first_name"
-								label="First Name"
+								label="Имя"
 								variant="outlined"
 								fullWidth
 								value={formik.values.first_name}
@@ -214,7 +214,7 @@ const EditProfile = () => {
 							<TextField
 								id="last_name"
 								name="last_name"
-								label="Last Name"
+								label="Фамилия"
 								variant="outlined"
 								fullWidth
 								value={formik.values.last_name}

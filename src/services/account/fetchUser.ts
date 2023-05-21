@@ -5,17 +5,19 @@ import { Account } from "../../utils/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { setUser } from "../../store/slices/user.slice";
 import { useAppDispatch } from "../../store/hooks";
-import { queries } from "@testing-library/react";
 
 export const fetchUser = async () => {
 	try {
 		const { data } = await baseAxios.get<Account>("/account/users/me/");
+		console.log(data);
 
 		const userData = {
 			first_name: data.first_name,
 			last_name: data.last_name,
 			avatar: data.avatar,
 			email: data.email,
+			category: data.category,
+			favorites: data.favorites,
 		};
 
 		return userData;

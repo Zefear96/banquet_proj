@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage";
 import Details from "./components/restaurant/Details";
 import RegisterForm from "./components/account/RegisterForm";
 import LoginForm from "./components/account/LoginForm";
+import FormCreateRestaurant from "./components/restaurant/FormCreateRestaurant";
 
 const MainRoutes = () => {
 	return (
@@ -19,8 +20,8 @@ const MainRoutes = () => {
 			<Route path="/profile" element={<ProfileMain />} />
 			<Route path="/profile/favorites" element={<Favorites />} />
 			<Route path="/profile/edit" element={<EditProfile />} />
-			{/* <Route path="/profile" element={<Profile />} /> */}
 			<Route path="/confirm/password" element={<ResetPassword />} />
+			<Route path="/add/restaurant" element={<FormCreateRestaurant />} />
 			<Route path="/details" element={<Details />} />
 		</Routes>
 	);

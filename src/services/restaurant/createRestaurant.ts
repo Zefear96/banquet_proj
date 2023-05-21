@@ -4,16 +4,36 @@ import { baseAxios } from "../../utils/baseAxios";
 import { useNavigate } from "react-router-dom";
 import { Restaurant } from "../../utils/types";
 
+type createRestaurant = {
+	title: string;
+	price_people: string;
+	locate: string;
+	working_hours: string;
+	features: string;
+	image: any;
+};
+
 export const useCreateRestaurant = () => {
 	const [errorMessage, setErrorMessage] = React.useState<string>("");
 	const [sucessCreateRestaurant, setSuccessCreateRestaurant] =
 		React.useState<boolean>(false);
 	const navigate = useNavigate();
 
-	const createRestaurant = async (arg: Restaurant) => {
+	const createRestaurant = async (arg: createRestaurant) => {
 		setErrorMessage("");
+		const formData = new FormData();
+
 		try {
-			const { data } = await baseAxios.post("/restaurant/create/", arg);
+			for (const [key, value] of Object.entries(arg)) {
+				if (value !== null && value !== undefined && value !== "") {
+					if (value instanceof Blob) {
+						formData.append(key, value);
+					} else {
+						formData.append(key, value.toString());
+					}
+				}
+			}
+			const { data } = await baseAxios.post("/restaurant/create/", formData);
 			return data;
 		} catch (error) {
 			if (error.response) {

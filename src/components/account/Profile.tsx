@@ -44,7 +44,7 @@ const Profile = () => {
 							</Box>
 							{user.category == "business" ? (
 								<Box className="areaBtn">
-									<NavLink to="/add/rest">Добавить ресторан</NavLink>
+									<NavLink to="/add/restaurant">Добавить ресторан</NavLink>
 								</Box>
 							) : null}
 						</Box>

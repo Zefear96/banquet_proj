@@ -11,7 +11,7 @@ export const useLogout = () => {
 	const logout = useCallback(() => {
 		dispatch(updateTokens({ accessToken: null, refreshToken: null }));
 		dispatch(clearUser());
-		// navigate("/");
+		navigate("/");
 	}, [dispatch, navigate]);
 
 	return logout;
