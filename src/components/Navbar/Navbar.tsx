@@ -22,9 +22,9 @@ import RegisterModal from "../account/modals/RegisterModal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { checkTokenExists } from "../../store/slices/user.slice";
 import { useLogout } from "../../services/account/logout";
+import UserMenu from "./UserMenu";
 
 const Navbar = () => {
-	const logout = useLogout();
 	const user = useAppSelector((state) => state.user.data);
 	const dispatch = useAppDispatch();
 
@@ -47,14 +47,6 @@ const Navbar = () => {
 		link: string,
 	) => {
 		setAnchorElNav(event.currentTarget);
-	};
-	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorElUser(event.currentTarget);
-	};
-
-	const handleCloseUserMenu = (link: string) => {
-		setAnchorElUser(null);
-		navigate(link);
 	};
 
 	const handleModal = () => {
@@ -89,58 +81,7 @@ const Navbar = () => {
 						</div>
 					</div>
 				) : (
-					<Box sx={{ flexGrow: 0 }}>
-						<Tooltip title="Open settings">
-							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-								<Avatar
-									alt="user avatar"
-									src={user.avatar}
-									style={{
-										border: "2px solid rgba(160, 125, 80, 1)",
-										width: "50px",
-										height: "50px",
-									}}
-								/>
-							</IconButton>
-						</Tooltip>
-						<Menu
-							sx={{ mt: "45px" }}
-							id="menu-appbar"
-							anchorEl={anchorElUser}
-							anchorOrigin={{
-								vertical: "top",
-								horizontal: "right",
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: "top",
-								horizontal: "right",
-							}}
-							open={Boolean(anchorElUser)}
-							onClose={handleCloseUserMenu}
-						>
-							{settings.map((setting) =>
-								setting.title === "Выйти" ? (
-									<MenuItem
-										key={setting.id}
-										onClick={() => {
-											handleCloseUserMenu(setting.link);
-											logout();
-										}}
-									>
-										<Typography textAlign="center">{setting.title}</Typography>
-									</MenuItem>
-								) : (
-									<MenuItem
-										key={setting.id}
-										onClick={() => handleCloseUserMenu(setting.link)}
-									>
-										<Typography textAlign="center">{setting.title}</Typography>
-									</MenuItem>
-								),
-							)}
-						</Menu>
-					</Box>
+					<UserMenu />
 				)}
 			</nav>
 		</>
@@ -148,21 +89,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-const settings = [
-	{
-		title: "Профиль",
-		link: "/profile",
-		id: 1,
-	},
-	{
-		title: "Настройки",
-		link: "/profile/edit",
-		id: 2,
-	},
-	{
-		title: "Выйти",
-		link: "/",
-		id: 3,
-	},
-];

@@ -6,6 +6,7 @@ export type Account = {
 	date_joined: string;
 	username: string;
 	email: string;
+	favorites: any[];
 	password: string;
 	category: string;
 	first_name: string | null;

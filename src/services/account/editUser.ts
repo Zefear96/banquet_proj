@@ -13,8 +13,8 @@ type editUserArg = {
 };
 
 const editUser = async (arg: editUserArg) => {
-	const formData = new FormData();
 	// const [errorMessage, setErrorMessage] = React.useState<string>("");
+	const formData = new FormData();
 
 	try {
 		for (const [key, value] of Object.entries(arg)) {
@@ -27,14 +27,18 @@ const editUser = async (arg: editUserArg) => {
 			}
 		}
 
-		const res = await baseAxios.put<Account>("/account/update/", formData, {
-			headers: {
-				"Content-Type": "multipart/form-data",
+		const { data } = await baseAxios.put<Account>(
+			"/account/update/",
+			formData,
+			{
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
 			},
-		});
-		console.log(res.data);
+		);
+		console.log(data);
 
-		return res.data;
+		return data;
 	} catch (error) {
 		if (error.response) {
 			console.log(error);

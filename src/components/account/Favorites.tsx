@@ -17,7 +17,7 @@ const Favorites = () => {
 				<Profile />
 				<Box sx={{ marginTop: "20px", width: "auto" }}>
 					<Box className="Mychose">
-						<NavLink to="/profile/feedback">
+						<NavLink to="/profile">
 							<Typography>Мои отзывы</Typography>
 							<Box className="textLine"></Box>
 						</NavLink>
